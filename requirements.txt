@@ -1,0 +1,3 @@
+typing
+obasparql==2.0.2
+Click
