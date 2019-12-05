@@ -7,6 +7,7 @@ import tempfile
 import requests
 import os
 import click
+import uuid 
 
 
 
@@ -16,6 +17,7 @@ def download_extract_zip(url, _dir):
     temp = tempfile.NamedTemporaryFile(prefix="component_")
     content = download_file(url)
     temp.write(content)
+    _dir = "{}/{}".format(_dir, uuid.uuid1())
     with ZipFile(temp.name, 'r') as zip:
         zip.extractall(_dir)
     directories = os.listdir(_dir)
@@ -32,7 +34,8 @@ def download_extract_zip(url, _dir):
         raise ValueError("The zipfile must has one directory.")
 
 def download_file(url):
-    r = requests.get(url, allow_redirects=True)
+    headers={'Cache-Control': 'no-cache'}
+    r = requests.get(url, allow_redirects=True, headers=headers)
     try:
         r.raise_for_status()
     except requests.exceptions.HTTPError:
@@ -42,19 +45,18 @@ def download_file(url):
     return r.content
 
 def download_data_file(url, _dir):
+    headers={'Cache-Control': 'no-cache'}
+    r = requests.get(url, allow_redirects=True, headers=headers)
     print("downloading {}".format(url))
     filename = url.split('/')[-1]
     filepath = os.path.join(_dir, filename)
-    with requests.get(url, stream=True) as r:
+    with requests.get(url, stream=True, headers=headers) as r:
         r.raise_for_status()
         with open(filepath, 'wb') as f:
             for chunk in r.iter_content(chunk_size=8192):
                 if chunk: # filter out keep-alive new chunks
                     f.write(chunk)
     return filepath, filename
-
-
-
 
 
 def build_input(inputs, _dir):
