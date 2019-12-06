@@ -128,7 +128,7 @@ def runsetup(setup):
         l = build_output(outputs)
         line += " {}".format(l)
     if parameters is not None:
-        build_parameter(parameters)
+        l = build_parameter(parameters)
         line += " {}".format(l)
     run_script = "{}.sh".format(setup)
     with open(run_script, "w") as f:
