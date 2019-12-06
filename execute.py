@@ -138,6 +138,6 @@ def runsetup(setup):
         f.write("chmod +x run\n")
         f.write("{}\n".format(line))
         f.write("popd\n".format(line))
-    print("bash {}".format(run_script))
+    print("screen -S {} bash {}".format(setup, run_script))
 if __name__ == "__main__":
     runsetup()
