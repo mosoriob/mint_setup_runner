@@ -47,7 +47,6 @@ def download_file(url):
 def download_data_file(url, _dir):
     headers={'Cache-Control': 'no-cache'}
     r = requests.get(url, allow_redirects=True, headers=headers)
-    print("downloading {}".format(url))
     filename = url.split('/')[-1]
     filepath = os.path.join(_dir, filename)
     with requests.get(url, stream=True, headers=headers) as r:
@@ -60,7 +59,7 @@ def download_data_file(url, _dir):
 
 
 def build_input(inputs, _dir):
-    line =  ""
+    line = ""
     files_inputs = []
     for _input in inputs:
         if not "hasFixedResource" in _input:
@@ -132,8 +131,14 @@ def runsetup(setup):
     if parameters is not None:
         build_parameter(parameters)
         line += " {}".format(l)
-    print("cd {} ".format(src_path))
-    print(line)
-
+    run_script = "{}.sh".format(setup)
+    with open(run_script, "w") as f:
+        f.write("#!/bin/bash\n")
+        f.write("set -xe\n")
+        f.write("pushd {}\n".format(src_path))
+        f.write("chmod +x run\n")
+        f.write("{}\n".format(line))
+        f.write("popd\n".format(line))
+    print("bash {}".format(run_script))
 if __name__ == "__main__":
     runsetup()
