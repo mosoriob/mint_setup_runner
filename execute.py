@@ -8,7 +8,7 @@ import requests
 import os
 import click
 import uuid 
-
+import subprocess
 
 
 ignore_dirs = ["__MACOSX"]
@@ -131,7 +131,7 @@ def runsetup(setup):
         l = build_output(outputs)
         line += " {}".format(l)
     if parameters is not None:
-        build_parameter(parameters)
+        l = build_parameter(parameters)
         line += " {}".format(l)
     run_script = "{}.sh".format(setup)
     with open(run_script, "w") as f:
@@ -141,6 +141,9 @@ def runsetup(setup):
         f.write("chmod +x run\n")
         f.write("{}\n".format(line))
         f.write("popd\n".format(line))
-    print("bash {}".format(run_script))
+
+    run_cmd = "bash {}".format(run_script)
+    subprocess.run(run_cmd, shell=True, check=True)
+    #print("screen -S {} bash {}".format(setup, run_script))
 if __name__ == "__main__":
     runsetup()
