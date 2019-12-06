@@ -92,7 +92,7 @@ def build_parameter(parameters):
             exit(1)
         value = _parameter["hasDefaultValue"][0]
         position = _parameter["position"][0]
-        line += " -o{} {}.{}".format(position, value)
+        line += " -p{} {}".format(position, value)
     return line
 
 @click.group()
