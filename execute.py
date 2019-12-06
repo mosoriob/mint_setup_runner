@@ -13,11 +13,11 @@ import uuid
 
 ignore_dirs = ["__MACOSX"]
 
-def download_extract_zip(url, _dir):
+def download_extract_zip(url, _dir, setup):
     temp = tempfile.NamedTemporaryFile(prefix="component_")
     content = download_file(url)
     temp.write(content)
-    _dir = "{}/{}".format(_dir, uuid.uuid1())
+    _dir = "{}/{}_{}".format(_dir, setup, uuid.uuid1())
     with ZipFile(temp.name, 'r') as zip:
         zip.extractall(_dir)
     directories = os.listdir(_dir)
@@ -114,11 +114,10 @@ def runsetup(setup):
     outputs = resource[0]["hasOutput"]
     component_url = resource[0]["hasComponentLocation"][0]
     has_software_image = resource[0]["hasSoftwareImage"][0]['label'][0]
-
     line = "singularity exec docker://{} ./run ".format(has_software_image)
     _dir = Path("executions/")
     _dir.mkdir(parents=True, exist_ok=True)
-    component_dir = download_extract_zip(component_url, _dir)
+    component_dir = download_extract_zip(component_url, _dir, setup)
     path = Path(component_dir)
     src_path = path / "src"
 
