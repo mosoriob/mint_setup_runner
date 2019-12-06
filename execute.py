@@ -90,7 +90,7 @@ def build_parameter(parameters):
         if not "label" in _parameter:
             print("fail:")
             exit(1)
-        if "hasFixedValue":
+        if "hasFixedValue" in _parameter:
             value = _parameter["hasFixedValue"][0]
         else:
             value = _parameter["hasDefaultValue"][0]
