@@ -11,9 +11,11 @@ pip install -r requirements.txt
 `mint_setup_runner` downloads the setup and write them as YAML files.
 
 To obtain the `setups` (`ConfigurationSetup`) of a `SoftwareConfiguration,` we must pass the id of the resource.
-The id of the `SoftwareConfiguration` `https://w3id.org/okn/i/mint/topoflow_cfg_simple_Awash` is `topoflow_cfg_simple_Awash` then you must execute:
 
-python generate_setup.py
+For example, the `SoftwareConfiguration` `https://w3id.org/okn/i/mint/topoflow_cfg_simple_Awash` has the id `topoflow_cfg_simple_Awash`.
+
+The option `-o` defines the output directory.
+
 ```python
 python generate_setup.py -o setups topoflow_cfg_simple
 ```
